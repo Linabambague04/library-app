@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('number_pages')->nullable();
             $table->string('genre')->nullable();
             $table->string('editorial')->nullable();
-            $table->foreignId('id_author')->constrained('authors');
+            $table->foreignId('id_author')->constrained('authors')->onDelete('cascade');
             $table->string('language')->nullable();
             $table->text('synopsis')->nullable();
             $table->timestamps();
