@@ -1,0 +1,51 @@
+<div class="card mt-5">
+  <h3 class="card-header p-3">Book</h3>
+  <div class="card-body">
+    <div class="m-1">
+      <a
+      [routerLink]="['/books/create']"
+      class="btn btn-sm btn-success me-2">Create Book</a>
+    </div>
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Image</th>
+          <th>Subtitle</th>
+          <th>Publication Date</th>
+          <th>Number Pages</th>
+          <th>Genre</th>
+          <th>Editorial</th>
+          <th>Id Author</th>
+          <th>Language</th>
+          <th>Synopsis</th>
+          <th width="250px">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(book of books; track book.id){
+        <tr>
+          <td>{{ book.id }}</td>
+          <td>{{ book.ISBN }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.image }}</td>
+          <td>{{ book.subtitle }}</td>
+          <td>{{ book.publication_date }}</td>
+          <td>{{ book.number_pages }}</td>
+          <td>{{ book.genre }}</td>
+          <td>{{ book.editorial }}</td>
+          <td>{{ book.id_author }}</td>
+          <td>{{ book.language }}</td>
+          <td>{{ book.synopsis }}</td>
+          <td>
+            <a [routerLink]="['/books', book.id]" class="btn btn-sm btn-info me-2 m-1">Show</a>
+            <a [routerLink]="['/books', book.id, 'edit']" class="btn btn-sm btn-primary me-2 m-1">Edit</a>
+            <button (click)= "deleteBook(book.id)" class="btn btn-sm btn-danger">Delete</button>
+          </td>
+      }
+      </tbody>
+    </table>
+  </div>
+</div>

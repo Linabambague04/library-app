@@ -10,7 +10,7 @@ import { Author } from '../author';
   styleUrl: './show.css'
 })
 export class Show {
-   id = '';
+  id = '';
   name = '';
   last_name = '';
   date_birth = '';
