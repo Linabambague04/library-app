@@ -1,1 +1,47 @@
-<p>edit works!</p>
+<div class="card mt-5">
+  <h3 class="card-header p-3">Author-Edit</h3>
+  <div class="card-body">
+    <div class="m-1">
+      <a
+      [routerLink]="['/authors']"
+      class="btn btn-sm btn-primary me-2">Back</a>
+    </div>
+    <form (ngSubmit)="submit()">
+      <div class="mt-2">
+        <label for="name">Name: </label>
+        <input [(ngModel)]="name" type="text" name="name" id="name" class="form-control">
+      </div>
+      <div class="mt-2">
+        <label for="name">Last Name: </label>
+        <input [(ngModel)]="last_name" type="text" name="last_name" id="last_name" class="form-control">
+      </div>
+      <div class="mt-2">
+        <label for="name">Date Birth: </label>
+        <input [(ngModel)]="date_birth" type="date" name="date_birth" id="date_birth" class="form-control">
+      </div>
+      <div class="mt-2">
+        <label for="name">Nationality: </label>
+        <input [(ngModel)]="nationality" type="text" name="nationality" id="nationality" class="form-control">
+      </div>
+      <div class="mt-2">
+        <label for="name">Biography: </label>
+        <input [(ngModel)]="biography" type="text" name="biography" id="biography" class="form-control">
+      </div>
+      <div class="mt-2">
+        <label for="name">Contact: </label>
+        <input [(ngModel)]="contact" type="text" name="contact" id="contact" class="form-control">
+      </div>
+
+      @if (error) {
+        <div>
+          <span class="text-danger">{{ error}}</span>
+        </div>
+      }
+
+      <div class="mt-2">
+        <button class="btn btn-success">Submit</button>
+      </div>
+
+    </form>
+  </div>
+</div>

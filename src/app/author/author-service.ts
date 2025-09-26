@@ -19,4 +19,15 @@ export class AuthorService {
     return this.http.post<Author[]>(this.apiURL+"/authors", data)
   }
 
+  findAuthor(id: string): Observable<Author>{
+    return this.http.get<Author>(this.apiURL+"/authors/" + id)
+  }
+
+  updateAuthor(id: string, data: Author): Observable<Author>{
+    return this.http.put<Author>(this.apiURL+"/authors/"+ id, data)
+  }
+
+  deleteAuthor(id: number): Observable<any>{
+    return this.http.delete<any>(this.apiURL+"/authors/" + id)
+  }
 }

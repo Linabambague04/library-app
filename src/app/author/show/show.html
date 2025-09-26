@@ -1,0 +1,18 @@
+<div class="card mt-5">
+  <h3 class="card-header p-3">Author-Show</h3>
+  <div class="card-body">
+    <div class="m-1">
+      <a
+      [routerLink]="['/authors']"
+      class="btn btn-sm btn-primary me-2">Back</a>
+    </div>
+    <div>
+      <p><strong>Name: </strong>{{ name }}</p>
+      <p><strong>Last Name: </strong>{{ last_name }}</p>
+      <p><strong>Date Birth: </strong>{{ date_birth }}</p>
+      <p><strong>Nationality: </strong>{{ nationality }}</p>
+      <p><strong>Biography: </strong>{{ biography }}</p>
+      <p><strong>Contact: </strong>{{ contact }}</p>
+    </div>
+  </div>
+</div>

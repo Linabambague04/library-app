@@ -30,8 +30,9 @@
           <td>{{ author.biography }}</td>
           <td>{{ author.contact }}</td>
           <td>
-            <button class="btn btn-sm btn-primary me-2">Edit</button>
-            <button class="btn btn-sm btn-danger">Delete</button>
+            <a [routerLink]="['/authors', author.id]" class="btn btn-sm btn-info me-2 m-1">Show</a>
+            <a [routerLink]="['/authors', author.id, 'edit']" class="btn btn-sm btn-primary me-2 m-1">Edit</a>
+            <button (click)= "deleteAuthor(author.id)" class="btn btn-sm btn-danger">Delete</button>
           </td>
         </tr>
       }

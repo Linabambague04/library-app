@@ -16,9 +16,19 @@ export class Index {
   constructor(private authorService: AuthorService){}
 
   ngOnInit(): void{
-    this.authorService.getAuthors().subscribe((data: Author[])=>{
-      this.authors = data;
-    })
+    this.loadAuthors();
   }
 
+  deleteAuthor(id: number) {
+    if(confirm("Are you sure to remove this author?")){
+      this.authorService.deleteAuthor(id).subscribe(()=>{
+         this.loadAuthors();
+      });
+    }
+  }
+  loadAuthors(){
+    this.authorService.getAuthors().subscribe((data: Author[]) => {
+      this.authors = data;
+    });
+  }
 }
