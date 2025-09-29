@@ -12,6 +12,7 @@ class Author extends Model
         'last_name',
         'date_birth',
         'nationality',
+        'user_id',
         'biography',
         'contact'
     ];
