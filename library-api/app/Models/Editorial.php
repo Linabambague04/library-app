@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Editorial extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'company_name',
@@ -15,7 +18,6 @@ class Editorial extends Model
         'description',
     ];
 
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -23,6 +25,6 @@ class Editorial extends Model
 
     public function books()
     {
-        return $this->hasMany(Book::class, 'editorial_id');
+        return $this->hasMany(Book::class);
     }
 }

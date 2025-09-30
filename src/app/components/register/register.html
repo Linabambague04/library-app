@@ -1,0 +1,100 @@
+<form [formGroup]="registerForm" (ngSubmit)="submit()" class="container mt-4">
+  <div class="mb-3">
+    <label class="form-label">Nombre:</label>
+    <input formControlName="name" class="form-control" [ngClass]="{'is-invalid': backendErrors.name}">
+    <div *ngIf="backendErrors.name" class="invalid-feedback">
+      {{ backendErrors.name[0] }}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Email:</label>
+    <input formControlName="email" type="email" class="form-control" [ngClass]="{'is-invalid': backendErrors.email}">
+    <div *ngIf="backendErrors.email" class="invalid-feedback">
+      {{ backendErrors.email[0] }}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Contraseña:</label>
+    <input type="password" formControlName="password" class="form-control" [ngClass]="{'is-invalid': backendErrors.password}">
+    <div *ngIf="backendErrors.password" class="invalid-feedback">
+      {{ backendErrors.password[0] }}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Rol:</label>
+    <select formControlName="role" class="form-select" [ngClass]="{'is-invalid': backendErrors.role}">
+      <option value="">Seleccione un rol</option>
+      <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+    </select>
+    <div *ngIf="backendErrors.role" class="invalid-feedback">
+      {{ backendErrors.role[0] }}
+    </div>
+  </div>
+
+  <!-- Campos para author -->
+  <div *ngIf="registerForm.value.role === 'author'" class="border p-3 mb-3 rounded">
+    <h5>Información del Autor</h5>
+
+    <div class="mb-3">
+      <label class="form-label">Apellido:</label>
+      <input formControlName="last_name" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Fecha de nacimiento:</label>
+      <input type="date" formControlName="date_birth" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Nacionalidad:</label>
+      <input formControlName="nationality" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Biografía:</label>
+      <textarea formControlName="biography" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Contacto:</label>
+      <input formControlName="contact" class="form-control">
+    </div>
+  </div>
+
+  <!-- Campos para editorial -->
+  <div *ngIf="registerForm.value.role === 'editorial'" class="border p-3 mb-3 rounded">
+    <h5>Información de la Editorial</h5>
+
+    <div class="mb-3">
+      <label class="form-label">Nombre de empresa:</label>
+      <input formControlName="company_name" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Sitio web:</label>
+      <input formControlName="website" type="url" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Teléfono:</label>
+      <input formControlName="phone" type="tel" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Dirección:</label>
+      <input formControlName="address" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Descripción:</label>
+      <textarea formControlName="description" class="form-control"></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Registrar</button>
+  <br>
+  <a rel="stylesheet" [routerLink]="['login']">¿Ya tienes cuenta? Inicia sesión</a>
+</form>

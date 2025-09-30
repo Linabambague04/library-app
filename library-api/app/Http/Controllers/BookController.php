@@ -2,81 +2,99 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $books = Book::with('author')->get();
+        $books = Book::with(['author.user', 'editorial.user'])->get();
         return response()->json($books);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'ISBN' => 'required|string|max:255',
-            'title' => 'required|string|max:255',
-            'image' => 'nullable|string',
-            'subtitle' => 'nullable|string',
+        $author = Auth::user()->author;  // relación hasOne en User
+
+        if (!$author) {
+            return response()->json(['message' => 'Solo un autor puede crear libros'], 403);
+        }
+
+        $data = $request->validate([
+            'ISBN'             => 'required|string|max:255|unique:books,ISBN',
+            'title'            => 'required|string|max:255',
+            'image'            => 'nullable|string',
+            'subtitle'         => 'nullable|string',
             'publication_date' => 'nullable|date',
-            'number_pages' => 'nullable|integer',
-            'genre' => 'nullable|string',
-            'editorial' => 'nullable|string',
-            'id_author' => 'required|exists:authors,id',
-            'language' => 'nullable|string',
-            'synopsis' => 'nullable|string',
+            'number_pages'     => 'nullable|integer',
+            'genre'            => 'nullable|string',
+            'editorial_id'     => 'nullable|exists:editorials,id',
+            'language'         => 'nullable|string',
+            'synopsis'         => 'nullable|string',
         ]);
 
-        $book = Book::create($validated);
-        return response()->json($book, 201);
+        $data['author_id'] = $author->id;  // ahora sí, ID válido en tabla authors
+
+        $book = Book::create($data);
+
+        return response()->json($book->load('author.user', 'editorial.user'), 201);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Book $book)
+
+    public function show($id)
     {
-        $book->load('author');
+        $book = Book::with(['author.user', 'editorial.user'])->find($id);
+        if (!$book) {
+            return response()->json(['message' => 'Libro no encontrado'], 404);
+        }
         return response()->json($book);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'ISBN' => 'sometimes|required|string|max:255',
-            'title' => 'sometimes|required|string|max:255',
-            'image' => 'nullable|string',
-            'subtitle' => 'nullable|string',
+        $author = Auth::user()->author;
+        if (!$author) {
+            return response()->json(['message' => 'No eres un autor'], 403);
+        }
+
+        $book = Book::find($id);
+        if (!$book || $book->author_id !== $author->id) {
+            return response()->json(['message' => 'No puedes editar este libro'], 403);
+        }
+
+        $data = $request->validate([
+            'ISBN'             => 'sometimes|string|max:255|unique:books,ISBN,' . $id,
+            'title'            => 'sometimes|string|max:255',
+            'image'            => 'nullable|string',
+            'subtitle'         => 'nullable|string',
             'publication_date' => 'nullable|date',
-            'number_pages' => 'nullable|integer',
-            'genre' => 'nullable|string',
-            'editorial' => 'nullable|string',
-            'id_author' => 'sometimes|required|exists:authors,id',
-            'language' => 'nullable|string',
-            'synopsis' => 'nullable|string',
+            'number_pages'     => 'nullable|integer',
+            'genre'            => 'nullable|string',
+            'editorial_id'     => 'nullable|exists:editorials,id',
+            'language'         => 'nullable|string',
+            'synopsis'         => 'nullable|string',
         ]);
 
-        $book->update($validated);
-        return response()->json($book);
+        $book->update($data);
+        return response()->json($book->load('author.user', 'editorial.user'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
+        $author = Auth::user()->author;
+        if (!$author) {
+            return response()->json(['message' => 'No eres un autor'], 403);
+        }
+
+        $book = Book::find($id);
+        if (!$book || $book->author_id !== $author->id) {
+            return response()->json(['message' => 'No puedes eliminar este libro'], 403);
+        }
+
         $book->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Libro eliminado']);
     }
 }

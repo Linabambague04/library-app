@@ -1,0 +1,29 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        [(ngModel)]="email" 
+        class="form-control" 
+        placeholder="Ingrese su email">
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input 
+        type="password" 
+        id="password" 
+        [(ngModel)]="password" 
+        class="form-control" 
+        placeholder="Ingrese su contraseña">
+    </div>
+
+    <button (click)="login()" class="btn btn-primary w-100">Ingresar</button>
+    <br>
+    <a rel="stylesheet" [routerLink]="['/register']">¿No tienes cuenta? Registrate</a>
+  </div>
+</div>

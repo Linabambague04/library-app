@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('publication_date')->nullable();
             $table->integer('number_pages')->nullable();
             $table->string('genre')->nullable();
-            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('editorial_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
+            $table->foreignId('editorial_id')->nullable()->constrained('editorials')->onDelete('set null');
             $table->string('language')->nullable();
             $table->text('synopsis')->nullable();
             $table->timestamps();

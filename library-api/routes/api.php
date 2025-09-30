@@ -1,18 +1,30 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\EditorialController;
+use App\Http\Controllers\BookController;
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::get('/me', [UserController::class, 'me']);
+    Route::put('/me', [UserController::class, 'update']);
 
-Route::post('/users', [UserController::class, 'store']);
+    Route::get('/author/me', [AuthorController::class, 'me']);
+    Route::put('/author/me', [AuthorController::class, 'update']);
 
-Route::apiResource('authors', AuthorController::class);
-Route::apiResource('books', BookController::class);
+    Route::get('/editorial/me', [EditorialController::class, 'me']);
+    Route::put('/editorial/me', [EditorialController::class, 'update']);
+
+    Route::get('/books', [BookController::class, 'index']);
+    Route::post('/books', [BookController::class, 'store']);
+    Route::get('/books/{id}', [BookController::class, 'show']);
+    Route::put('/books/{id}', [BookController::class, 'update']);
+    Route::delete('/books/{id}', [BookController::class, 'destroy']);
+});

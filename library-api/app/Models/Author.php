@@ -2,20 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Book;
 
 class Author extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'name',
+        'user_id',
         'last_name',
         'date_birth',
         'nationality',
-        'user_id',
         'biography',
-        'contact'
+        'contact',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function books()
     {

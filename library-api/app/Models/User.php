@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Author;
-use App\Models\Editorial;
-use App\Models\Book;
 
 class User extends Authenticatable
 {
@@ -21,27 +18,19 @@ class User extends Authenticatable
         'role',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function author()
     {
-        return $this->hasOne(Author::class);
+        return $this->hasOne(Author::class, 'user_id');
     }
 
     public function editorial()
     {
         return $this->hasOne(Editorial::class);
-    }
-
-
-    public function booksWritten()
-    {
-        return $this->hasMany(Book::class, 'author_id');
-    }
-
-
-    public function booksPublished()
-    {
-        return $this->hasMany(Book::class, 'editorial_id');
     }
 
     public function isAuthor()
