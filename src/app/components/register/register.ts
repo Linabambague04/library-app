@@ -13,8 +13,8 @@ import { RouterLink } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  backendErrors: any = {}; 
-  roles = ['author', 'editorial', 'reader', 'admin']; // ✅ ahora incluye reader
+  backendErrors: any = {};
+  roles = ['author', 'editorial', 'reader', 'admin'];
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
@@ -23,21 +23,21 @@ export class RegisterComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['', Validators.required],
 
-      // Campos de autor
+      // autor
       last_name: [''],
       date_birth: [''],
       nationality: [''],
       biography: [''],
       contact: [''],
 
-      // Campos de editorial
+      // editorial
       company_name: [''],
       website: [''],
       phone: [''],
       address: [''],
       description: [''],
 
-      // Campos de reader
+      // reader
       nickname: [''],
       favorite_genre: [''],
     });
@@ -50,7 +50,6 @@ export class RegisterComponent {
 
     const data = this.registerForm.value;
 
-    // ✅ Solo mandar los campos relevantes al rol
     const role = data.role;
     let payload: any = {
       name: data.name,
