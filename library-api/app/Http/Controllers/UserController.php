@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Author;
 use App\Models\Editorial;
+use App\Models\Reader;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,9 @@ class UserController extends Controller
 
     public function me()
     {
-        return response()->json(Auth::user()->load('author', 'editorial'));
+        return response()->json(
+            Auth::user()->load('author', 'editorial', 'reader.books')
+        );
     }
 
     /**
@@ -46,9 +49,13 @@ class UserController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'  => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'name'     => 'sometimes|string|max:255',
+            'email'    => 'sometimes|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|string|min:6|confirmed',
+
+            'nickname'       => 'sometimes|string|max:255',
+            'date_birth'     => 'sometimes|date',
+            'favorite_genre' => 'sometimes|string|max:255',
         ]);
 
         if (isset($validated['password'])) {
@@ -57,7 +64,11 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return response()->json($user);
+        if ($user->isReader() && $user->reader) {
+            $user->reader->update($request->only(['nickname', 'date_birth', 'favorite_genre']));
+        }
+
+        return response()->json($user->load('author', 'editorial', 'reader.books'));
     }
 
 

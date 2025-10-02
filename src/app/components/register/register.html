@@ -34,7 +34,6 @@
     </div>
   </div>
 
-  <!-- Campos para author -->
   <div *ngIf="registerForm.value.role === 'author'" class="border p-3 mb-3 rounded">
     <h5>Información del Autor</h5>
 
@@ -64,7 +63,6 @@
     </div>
   </div>
 
-  <!-- Campos para editorial -->
   <div *ngIf="registerForm.value.role === 'editorial'" class="border p-3 mb-3 rounded">
     <h5>Información de la Editorial</h5>
 
@@ -94,7 +92,26 @@
     </div>
   </div>
 
+  <div *ngIf="registerForm.value.role === 'reader'" class="border p-3 mb-3 rounded">
+    <h5>Información del Lector</h5>
+
+    <div class="mb-3">
+      <label class="form-label">Apodo:</label>
+      <input formControlName="nickname" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Fecha de nacimiento:</label>
+      <input type="date" formControlName="date_birth" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Género favorito:</label>
+      <input formControlName="favorite_genre" class="form-control">
+    </div>
+  </div>
+
   <button type="submit" class="btn btn-primary">Registrar</button>
   <br>
-  <a rel="stylesheet" [routerLink]="['login']">¿Ya tienes cuenta? Inicia sesión</a>
+  <a [routerLink]="['/login']">¿Ya tienes cuenta? Inicia sesión</a>
 </form>

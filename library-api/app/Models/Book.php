@@ -33,4 +33,12 @@ class Book extends Model
     {
         return $this->belongsTo(Editorial::class);
     }
+
+    public function readers()
+    {
+        return $this->belongsToMany(Reader::class, 'book_reader')
+                    ->withPivot('status', 'started_at', 'finished_at', 'rating')
+                    ->withTimestamps();
+    }
+
 }

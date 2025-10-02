@@ -8,11 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with(['author.user', 'editorial.user'])->get();
+        $query = Book::with(['author.user', 'editorial.user']);
+
+        if ($request->has('genre')) {
+            $query->where('genre', $request->genre);
+        }
+
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        $books = $query->get();
+
         return response()->json($books);
     }
+
 
     public function store(Request $request)
     {

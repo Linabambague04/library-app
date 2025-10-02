@@ -30,9 +30,14 @@ class User extends Authenticatable
 
     public function editorial()
     {
-        return $this->hasOne(Editorial::class);
+        return $this->hasOne(Editorial::class, 'user_id');
     }
 
+    public function reader()
+    {
+        return $this->hasOne(Reader::class, 'user_id');
+    }
+    
     public function isAuthor()
     {
         return $this->role === 'author';
@@ -46,5 +51,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function isReader()
+    {
+        return $this->role === 'reader';
     }
 }

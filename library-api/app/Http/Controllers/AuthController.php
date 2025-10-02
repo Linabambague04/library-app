@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Author;
 use App\Models\Editorial;
+use App\Models\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,20 +17,25 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
-            'role'     => 'required|in:author,editorial,admin',
+            'role'     => 'required|in:author,editorial,reader,admin',
 
-            // campos adicionales para author/editorial
+            // author
             'last_name'     => 'nullable|string|max:255',
             'date_birth'    => 'nullable|date',
             'nationality'   => 'nullable|string|max:255',
             'biography'     => 'nullable|string',
             'contact'       => 'nullable|string|max:255',
 
+            // editorial
             'company_name'  => 'nullable|string|max:255',
             'website'       => 'nullable|string|max:255',
             'phone'         => 'nullable|string|max:255',
             'address'       => 'nullable|string|max:255',
             'description'   => 'nullable|string',
+
+            // reader
+            'nickname'       => 'nullable|string|max:255',
+            'favorite_genre' => 'nullable|string|max:255',
         ]);
 
         $user = User::create([
@@ -40,32 +46,40 @@ class AuthController extends Controller
         ]);
 
         if ($user->role === 'author') {
-            \App\Models\Author::create([
-                'user_id' => $user->id,
-                'last_name' => $request->last_name ?? '',
-                'date_birth' => $request->date_birth ?? null,
+            Author::create([
+                'user_id'     => $user->id,
+                'last_name'   => $request->last_name ?? '',
+                'date_birth'  => $request->date_birth ?? null,
                 'nationality' => $request->nationality ?? null,
-                'biography' => $request->biography ?? null,
-                'contact' => $request->contact ?? null,
+                'biography'   => $request->biography ?? null,
+                'contact'     => $request->contact ?? null,
             ]);
         }
 
         if ($user->role === 'editorial') {
-            \App\Models\Editorial::create([
-                'user_id' => $user->id,
+            Editorial::create([
+                'user_id'      => $user->id,
                 'company_name' => $request->company_name ?? '',
-                'website' => $request->website ?? null,
-                'phone' => $request->phone ?? null,
-                'address' => $request->address ?? null,
-                'description' => $request->description ?? null,
+                'website'      => $request->website ?? null,
+                'phone'        => $request->phone ?? null,
+                'address'      => $request->address ?? null,
+                'description'  => $request->description ?? null,
             ]);
         }
 
+        if ($user->role === 'reader') {
+            Reader::create([
+                'user_id'       => $user->id,
+                'nickname'      => $request->nickname ?? '',
+                'date_birth'    => $request->date_birth ?? null,
+                'favorite_genre'=> $request->favorite_genre ?? null,
+            ]);
+        }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user'  => $user->load('author', 'editorial'),
+            'user'  => $user->load('author', 'editorial', 'reader'),
             'token' => $token,
         ]);
     }
@@ -86,7 +100,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user'  => $user->load('author', 'editorial'),
+            'user'  => $user->load('author', 'editorial', 'reader'),
             'token' => $token,
         ]);
     }
