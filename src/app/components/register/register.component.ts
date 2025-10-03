@@ -1,17 +1,16 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
-  templateUrl: './register.html',
-  styleUrls: ['./register.css']
+  templateUrl: './register.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterComponent {
+export class RegisterComponent { 
   registerForm: FormGroup;
   backendErrors: any = {};
   roles = ['author', 'editorial', 'reader', 'admin'];
@@ -102,4 +101,5 @@ export class RegisterComponent {
       }
     });
   }
+
 }

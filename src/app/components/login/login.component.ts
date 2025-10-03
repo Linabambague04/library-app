@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth';
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [FormsModule, RouterLink],
-  templateUrl: './login.html'
+  templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class LoginComponent { 
   email = '';
   password = '';
 
@@ -23,8 +22,9 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       },
       error: () => {
-        alert('Error en login ❌');
+        alert('Error en login');
       }
     });
   }
+
 }
