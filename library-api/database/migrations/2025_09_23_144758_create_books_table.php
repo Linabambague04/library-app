@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('editorial_id')->nullable()->constrained('editorials')->onDelete('set null');
             $table->string('language')->nullable();
             $table->text('synopsis')->nullable();
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

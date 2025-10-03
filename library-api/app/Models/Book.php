@@ -21,6 +21,7 @@ class Book extends Model
         'editorial_id',
         'language',
         'synopsis',
+        'file'
     ];
 
     public function author()
