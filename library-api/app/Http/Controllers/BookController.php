@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -188,5 +188,53 @@ class BookController extends Controller
             'success' => true,
             'message' => 'Libro eliminado correctamente',
         ]);
+    }
+
+    /**
+     * Stream book PDF file with headers that allow embedding.
+     */
+    public function file($id)
+    {
+        $book = Book::find($id);
+        if (!$book || !$book->file) {
+            return response()->json(['success' => false, 'message' => 'Archivo no encontrado'], 404);
+        }
+
+        // Optionally you could add authorization rules here if needed
+
+        $path = Storage::disk('public')->path($book->file);
+        if (!file_exists($path)) {
+            return response()->json(['success' => false, 'message' => 'Archivo no encontrado'], 404);
+        }
+
+        $response = response()->file($path);
+        // Relax X-Frame-Options so the PDF can be embedded from the Angular app
+        $response->headers->set('X-Frame-Options', 'ALLOWALL');
+        // Basic CORS to help if served from different origin during dev
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+        return $response;
+    }
+
+    /**
+     * Attach the book to the authenticated reader's list ("Mis libros").
+     */
+    public function read($id)
+    {
+        $user = Auth::user();
+        if (!$user || !$user->isReader() || !$user->reader) {
+            return response()->json(['success' => false, 'message' => 'Solo lectores pueden guardar libros'], 403);
+        }
+
+        $book = Book::find($id);
+        if (!$book) {
+            return response()->json(['success' => false, 'message' => 'Libro no encontrado'], 404);
+        }
+
+        // Avoid duplicate entries
+        $user->reader->books()->syncWithoutDetaching([$book->id]);
+
+        return response()->json(['success' => true, 'message' => 'Libro guardado en Mis libros']);
     }
 }

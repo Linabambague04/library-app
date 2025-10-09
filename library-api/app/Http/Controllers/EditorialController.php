@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EditorialController extends Controller
 {
+    public function index()
+    {
+        $editorials = Editorial::with('user')->select('id', 'user_id', 'company_name')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $editorials,
+        ]);
+    }
     public function me()
     {
         $editorial = Auth::user()->editorial;
@@ -36,3 +44,4 @@ class EditorialController extends Controller
         return response()->json($editorial->load('books'));
     }
 }
+

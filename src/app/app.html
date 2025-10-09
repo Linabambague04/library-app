@@ -1,1 +1,15 @@
-<router-outlet />
+<nav class="navbar vintage-nav">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a class="brand" routerLink="/books">Librioteca</a>
+    <div class="links d-flex gap-3">
+      <a routerLink="/books">Libros</a>
+      <a routerLink="/profile" *ngIf="isLogged()">Perfil</a>
+      <a routerLink="/author/books/new" *ngIf="isAuthor()">Nuevo Libro</a>
+      <a routerLink="/login" *ngIf="!isLogged()">Ingresar</a>
+      <button class="btn btn-sm" *ngIf="isLogged()" (click)="logout()">Salir</button>
+    </div>
+  </div>
+  </nav>
+<main class="container py-3">
+  <router-outlet />
+</main>

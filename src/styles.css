@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+  --vintage-bg: #fbf7ef;
+  --vintage-card: #fffaf0;
+  --vintage-border: #d8c6a6;
+  --vintage-accent: #b89b72;
+  --vintage-text: #3b2f2f;
+  --vintage-link: #7a5c3e;
+}
+
+html, body {
+  height: 100%;
+}
+body{
+  background: var(--vintage-bg);
+  color: var(--vintage-text);
+  font-family: 'Poppins', 'Source Sans 3', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.vintage-nav{
+  background: var(--vintage-card);
+  border-bottom: 1px solid var(--vintage-border);
+}
+.vintage-nav .brand{
+  font-family: 'Poppins', 'Source Sans 3', sans-serif;
+  font-weight: 700;
+  color: var(--vintage-text);
+  text-decoration: none;
+}
+.vintage-nav a{ color: var(--vintage-link); text-decoration: none; }
+.vintage-nav .btn{ background: var(--vintage-accent); color:#241c15; border: none; }
+
+.card{ background: var(--vintage-card); border:1px solid var(--vintage-border); }
+
+.vintage-title{
+  font-family: 'Poppins', 'Source Sans 3', sans-serif;
+  font-weight: 600;
+}
+
+.btn-primary{ background: var(--vintage-accent); border-color: var(--vintage-accent); color:#241c15 }
+.btn-primary:hover{ filter: brightness(.95); }
